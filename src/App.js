@@ -10,10 +10,12 @@ class App extends React.Component
     super(props);
 
     this.state = {
-      movies: []
+      movies: [],
+      clickedMovieId: 0
     }
 
     this.loadMovies = this.loadMovies.bind(this);
+    this.setId = this.setId.bind(this);
   }
 
   componentDidMount()
@@ -28,18 +30,22 @@ class App extends React.Component
       return response.json();
     })
     .then(jsonData => {
-        console.log(jsonData);
         this.setState({movies: jsonData.results})
-    });
+    });  
   }
+
+  setId(e, id)
+  {
+    this.setState({clickedMovieId: id})
+  };
 
   render() {
 
     return (
       
       <div className="BodyContainer">
-          <MovieThumbnails moviesarray={this.state.movies}/>
-          <MovieDetails moviesarray={this.state.movies}/>
+          <MovieThumbnails moviesarray={this.state.movies} whenClicked={this.setId}/>
+          <MovieDetails moviesarray={this.state.movies} movieId={this.state.clickedMovieId} />
       </div>
     );
   }
